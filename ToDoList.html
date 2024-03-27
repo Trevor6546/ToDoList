@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <ul>
+        {% for todo in todos %}
+            <li>
+                <input type="checkbox" {% if todo.completed %}checked{% endif %} onchange="completeTodo({{ loop.index0 }})">
+                {{ todo.task }}
+                <a href="/delete/{{ loop.index0 }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <form action="/add" method="post">
+        <input type="text" name="todo" placeholder="Add todo">
+        <button type="submit">Add</button>
+    </form>
+    <script>
+        function completeTodo(index) {
+            fetch('/complete/' + index)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    // Optionally handle response data
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+    </script>
+</body>
+</html>
