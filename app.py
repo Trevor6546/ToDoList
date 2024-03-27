@@ -4,6 +4,17 @@ app = Flask(__name__)
 
 todos = []
 
+@app.route('/')
+def index():
+    return render_template('index.html', todos=todos)
+
+#allows user to add "to-do" to their list
+@app.route('/add', methods=['POST'])
+def add_todo():
+    todo = request.form['todo']
+    todos.append({'task': todo, 'completed': False})  
+    return redirect(url_for('index'))
+
 #checks off listing
 @app.route('/complete/<int:index>')
 def complete_todo(index):
