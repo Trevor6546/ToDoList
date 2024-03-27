@@ -6,6 +6,7 @@ todos = []
 
 
 @app.route('/complete/<int:index>')
+//checks off listing
 def complete_todo(index):
     if 0 <= index < len(todos):
         todos[index]['completed'] = True  
